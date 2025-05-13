@@ -19,6 +19,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -63,6 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+    const router = useRouter();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -86,6 +88,10 @@ export default function AppHeader() {
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+
+    const handleRedirecHome = () => {
+        router.push("/")
+    }
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -181,14 +187,10 @@ export default function AppHeader() {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ display: { xs: 'none', sm: 'block' } }}
+                            sx={{ display: { xs: 'none', sm: 'block' }, cursor: "pointer" }}
+                            onClick={() => { handleRedirecHome() }}
                         >
-                            <Link href={"/"} style={{
-                                color: "unset",
-                                textDecoration: "unset"
-                            }}>
-                                NTDAT SC
-                            </Link>
+                            NTDAT SC
                         </Typography>
                         <Search>
                             <SearchIconWrapper>
