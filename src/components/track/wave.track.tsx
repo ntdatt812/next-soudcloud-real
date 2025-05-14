@@ -2,7 +2,11 @@
 import { useEffect, useRef } from 'react'
 import WaveSurfer from 'wavesurfer.js'
 
-const WaveTrack = () => {
+interface IProps {
+    audio: string | null;
+}
+
+const WaveTrack = ({ audio }: IProps) => {
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -12,7 +16,7 @@ const WaveTrack = () => {
             container: containerRef.current!,
             waveColor: 'rgb(200, 0, 200)',
             progressColor: 'rgb(100, 0, 100)',
-            url: '/tracks/hoidanit.mp3',
+            url: `/api?audio=${audio}`,
         })
     }, [])
     return (

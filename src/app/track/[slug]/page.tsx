@@ -4,13 +4,15 @@ import { useSearchParams } from 'next/navigation'
 const DetailTrackPage = ({ params }: { params: { slug: string } }) => {
     console.log(">> check id: ", params);
     const searchParams = useSearchParams();
-    const search = searchParams.get('audio');
-    console.log(">>> check audio: ", search)
+    const audio = searchParams.get('audio');
+    console.log(">>> check audio: ", audio)
     return (
         <div>
             Detai Track
             <div>
-                <WaveTrack />
+                <WaveTrack
+                    audio={audio}
+                />
             </div>
         </div>
     )
