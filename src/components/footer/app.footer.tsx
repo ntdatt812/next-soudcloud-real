@@ -1,10 +1,15 @@
 'use client'
+import { useHasMounted } from '@/utils/customHook';
 import { Container } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
 const AppFooter = () => {
+    const hasMounted = useHasMounted();
+    if (!hasMounted) return (<></>)
+
+    console.log(">>>check backend: ", process.env.NEXT_PUBLIC_BACKEND_URL)
     return (
         <div>
             <AppBar
@@ -17,8 +22,7 @@ const AppFooter = () => {
             ><Container sx={{ display: "flex", gap: 10 }}>
                     <AudioPlayer
                         autoPlay
-                        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
-                        onPlay={e => console.log("onPlay")}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
                         style={{
                             boxShadow: "unset",
                             background: "#f2f2f2"
