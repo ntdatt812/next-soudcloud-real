@@ -1,6 +1,6 @@
 import MainSlider from "@/components/main/main.slider";
 import { Container } from "@mui/material";
-import { sendRequestJS } from '@/utils/old.api'
+import { sendRequest } from "@/utils/api";
 
 export default async function HomePage() {
 
@@ -18,8 +18,27 @@ export default async function HomePage() {
   //   }
   // )
   // console.log(">>>Check res server: ", await res.json())
-
-  const res = await sendRequestJS({
+  interface ITrackTop {
+    _id: string;
+    title: string;
+    description: string;
+    category: string;
+    imgUrl: string;
+    trackUrl: string;
+    countLike: number;
+    countPlay: number;
+    uploader: {
+      _id: string;
+      email: string;
+      name: string;
+      role: string;
+      type: string;
+    },
+    isDeleted: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+  const res = await sendRequest<IBackendRes<ITrackTop[]>>({
     url: "http://localhost:8000/api/v1/tracks/top",
     method: "POST",
     body: {
@@ -28,7 +47,7 @@ export default async function HomePage() {
     }
   });
 
-  console.log(">check res: ", res)
+  console.log(">check res typescript: ", res)
 
   return (
     <Container>
