@@ -1,43 +1,17 @@
 'use client';
 
+import { useWavesurfer } from '@/utils/customHook';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import WaveSurfer from 'wavesurfer.js';
+import { useMemo, useRef } from 'react';
+import { WaveSurferOptions } from 'wavesurfer.js';
 
-type WaveSurferOptions = {
-    waveColor: string;
-    progressColor: string;
-    url: string;
-};
-
-const useWavesurfer = (containerRef: React.RefObject<HTMLDivElement>, options: WaveSurferOptions | null) => {
-    const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
-
-    useEffect(() => {
-        if (!containerRef.current || !options) return;
-
-        const ws = WaveSurfer.create({
-            ...options,
-            container: containerRef.current,
-        });
-
-        setWavesurfer(ws);
-
-        return () => {
-            ws.destroy();
-            setWavesurfer(null);
-        };
-    }, [containerRef, options?.url]);
-
-    return wavesurfer;
-};
 
 const WaveTrack = () => {
     const searchParams = useSearchParams();
     const fileName = searchParams.get('audio');
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const options = useMemo<WaveSurferOptions | null>(() => {
+    const options = useMemo<Omit<WaveSurferOptions, 'container'> | null>(() => {
         if (!fileName) return null;
         return {
             waveColor: '#2800DA',
@@ -46,7 +20,7 @@ const WaveTrack = () => {
         };
     }, [fileName]);
 
-    useWavesurfer(containerRef, options);
+    const wavesurfer = useWavesurfer(containerRef, options);
 
     return <div ref={containerRef} style={{ width: '100%', height: '128px' }} />;
 };
