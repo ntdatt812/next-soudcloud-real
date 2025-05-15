@@ -10,9 +10,7 @@ const DetailTrackPage = ({ params }: { params: { slug: string } }) => {
         <div>
             Detai Track
             <div>
-                <WaveTrack
-                    audio={audio}
-                />
+                <WaveTrack />
             </div>
         </div>
     )
