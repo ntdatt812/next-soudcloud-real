@@ -2,11 +2,12 @@
 
 import { useWavesurfer } from '@/utils/customHook';
 import { useSearchParams } from 'next/navigation';
-import { useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { WaveSurferOptions } from 'wavesurfer.js';
 
 
 const WaveTrack = () => {
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const searchParams = useSearchParams();
     const fileName = searchParams.get('audio');
     const containerRef = useRef<HTMLDivElement>(null);
@@ -22,7 +23,46 @@ const WaveTrack = () => {
 
     const wavesurfer = useWavesurfer(containerRef, options);
 
-    return <div ref={containerRef} style={{ width: '100%', height: '128px' }} />;
+    useEffect(() => {
+        if (!wavesurfer) return;
+        setIsPlaying(false);
+        const subscriptions = [
+            wavesurfer.on('play', () => setIsPlaying(true)),
+            wavesurfer.on('pause', () => setIsPlaying(false))
+        ]
+        return () => {
+            subscriptions.forEach((unsub) => unsub());
+        }
+    }, [])
+
+    const onPlayPause = useCallback(() => {
+        if (wavesurfer) {
+            wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play();
+        }
+    }, [wavesurfer])
+
+
+
+    return (
+        <div
+        >
+            <div
+                ref={containerRef}
+                style={{ width: '100%', height: '128px' }}
+            />
+
+            <button
+                onClick={() => {
+                    onPlayPause()
+                }}
+            >
+                {isPlaying === true ? "Pause" : "Play"}
+            </button>
+
+        </div>
+
+    );
+
 };
 
 export default WaveTrack;
