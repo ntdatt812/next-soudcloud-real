@@ -6,6 +6,7 @@ import { WaveSurferOptions } from 'wavesurfer.js';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
+import { Tooltip } from "@mui/material";
 
 const WaveTrack = () => {
     const searchParams = useSearchParams()
@@ -215,18 +216,25 @@ const WaveTrack = () => {
                             {
                                 arrComments.map((comment) => {
                                     return (
-                                        <img
-                                            key={comment.id}
-                                            style={{
-                                                height: 20,
-                                                width: 20,
-                                                top: 71,
-                                                position: "absolute",
-                                                zIndex: 20,
-                                                left: calLeft(comment.moment)
-                                            }}
-                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
-                                        />
+                                        <Tooltip title={comment.content} arrow>
+                                            <img
+                                                onPointerMove={(e) => {
+                                                    const hover = hoverRef.current!;
+                                                    hover.style.width = calLeft(comment.moment)
+                                                }}
+                                                key={comment.id}
+                                                style={{
+                                                    height: 20,
+                                                    width: 20,
+                                                    top: 71,
+                                                    position: "absolute",
+                                                    zIndex: 20,
+                                                    left: calLeft(comment.moment)
+                                                }}
+                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
+                                            />
+                                        </Tooltip>
+
                                     )
                                 })
                             }
