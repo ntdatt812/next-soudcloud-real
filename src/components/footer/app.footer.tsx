@@ -9,7 +9,6 @@ const AppFooter = () => {
     const hasMounted = useHasMounted();
     if (!hasMounted) return (<></>)
 
-    console.log(">>>check backend: ", process.env.NEXT_PUBLIC_BACKEND_URL)
     return (
         <div>
             <AppBar
@@ -21,7 +20,7 @@ const AppFooter = () => {
                 }}
             ><Container sx={{ display: "flex", gap: 10 }}>
                     <AudioPlayer
-                        autoPlay
+                        // autoPlay
                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
                         style={{
                             boxShadow: "unset",

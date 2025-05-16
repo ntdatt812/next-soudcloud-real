@@ -16,8 +16,6 @@ interface IProps {
 }
 
 const MainSlider = ({ data, title }: IProps) => {
-    console.log(">> check data: ", data)
-
     const NextArrow = (props: any) => {
         return (
             <Button color="inherit" variant="contained"
