@@ -49,5 +49,4 @@ declare global {
         createdAt: string;
         updatedAt: string;
     }
-
 }

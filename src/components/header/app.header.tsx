@@ -71,6 +71,8 @@ export default function AppHeader() {
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const { data: session } = useSession(); // gán data bằng cái tên mới là session
+    console.log(">>> Check session: ", session);
+
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -118,7 +120,12 @@ export default function AppHeader() {
                     Profile
                 </Link>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={() => {
+                handleMenuClose();
+                signOut();
+            }}>
+                Logout
+            </MenuItem>
         </Menu>
     );
 
@@ -223,7 +230,11 @@ export default function AppHeader() {
                                     ></Avatar>
                                 </>
                                 :
-                                <Link href="/api/auth/signin">Login</Link>
+                                <Link href="#" onClick={() => {
+                                    signIn()
+                                }}>
+                                    Login
+                                </Link>
                             }
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
