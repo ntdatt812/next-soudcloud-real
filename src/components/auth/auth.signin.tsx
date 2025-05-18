@@ -200,7 +200,10 @@ const AuthSignIn = (props: any) => {
             <Snackbar
                 open={openMessage}
                 // autoHideDuration={5000}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "center"
+                }}
             >
                 <Alert
                     onClose={() => setOpenMessage(false)}
