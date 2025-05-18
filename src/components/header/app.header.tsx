@@ -230,9 +230,7 @@ export default function AppHeader() {
                                     ></Avatar>
                                 </>
                                 :
-                                <Link href="#" onClick={() => {
-                                    signIn()
-                                }}>
+                                <Link href={"auth/signin"} >
                                     Login
                                 </Link>
                             }

@@ -4,7 +4,6 @@ import { AuthOptions } from 'next-auth'
 import { sendRequest } from "@/utils/api";
 import { JWT } from "next-auth/jwt/types";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { use } from "react";
 
 export const authOptions: AuthOptions = {
     secret: process.env.NO_SECRET,
@@ -87,7 +86,11 @@ export const authOptions: AuthOptions = {
             }
             return session;
         }
-    }
+    },
+    // pages: {
+    //     signIn: '/auth/signin',
+    //     signOut: '/auth/signout',
+    // }
 }
 
 
