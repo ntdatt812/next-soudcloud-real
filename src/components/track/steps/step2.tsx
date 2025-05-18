@@ -65,7 +65,7 @@ function InputFileUpload() {
 }
 
 
-const Step2 = () => {
+const Step2 = ({ trackUpload }: { trackUpload: any }) => {
     const category = [
         {
             value: 'CHILL',
@@ -85,9 +85,9 @@ const Step2 = () => {
         <div>
             <div>
                 <div>
-                    Your uploading track:
+                    Your uploading track: {trackUpload.fileName}
                 </div>
-                <LinearWithValueLabel />
+                <LinearProgressWithLabel value={trackUpload.percent} />
             </div>
 
             <Grid container spacing={2} mt={5}>

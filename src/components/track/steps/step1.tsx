@@ -4,7 +4,7 @@ import { FileWithPath, useDropzone } from 'react-dropzone';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { sendRequestFile } from '@/utils/api';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
@@ -42,11 +42,12 @@ function InputFileUpload() {
         </Button>
     );
 }
-const Step1 = () => {
+const Step1 = ({ setValue, setTrackUpload }: { setValue: (v: number) => void, setTrackUpload: any }) => {
     const { data: session } = useSession();
     const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
         // Do something with the files
         if (acceptedFiles && acceptedFiles[0]) {
+            setValue(1);
             const audio = acceptedFiles[0];
             const formData = new FormData();
             formData.append('fileUpload', audio);
@@ -56,6 +57,16 @@ const Step1 = () => {
                     headers: {
                         Authorization: `Bearer ${session?.access_token}`,
                         target_type: 'tracks'
+                    },
+                    onUploadProgress: progressEvent => {
+                        let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total!);
+                        console.log(">>> check percentCompleted: ", percentCompleted);
+                        setTrackUpload({
+                            fileName: audio.name,
+                            percent: percentCompleted
+                        })
+                        // do whatever you like with the percentage complete
+                        // maybe dispatch an action that will update a progress bar or something
                     }
                 })
 
