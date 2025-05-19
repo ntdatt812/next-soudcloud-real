@@ -9,6 +9,8 @@ import { Button, MenuItem, TextField } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { sendRequest } from '@/utils/api';
+import { useToast } from '@/utils/toast';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -25,6 +27,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
         </Box>
     );
 }
+
 function LinearWithValueLabel() {
     const [progress, setProgress] = React.useState(10);
 
@@ -62,6 +65,7 @@ function InputFileUpload({ setInfo, info }: {
 
 }) {
     const { data: session } = useSession();
+    const toast = useToast();
     const handleUpload = async (image: any) => {
         const formData = new FormData();
         formData.append('fileUpload', image);
@@ -78,7 +82,7 @@ function InputFileUpload({ setInfo, info }: {
             })
         } catch (error) {
             //@ts-ignore
-            console.log(">>> check error: ", error?.response?.data?.message)
+            toast.error(error?.response?.data?.message);
         }
     }
     return (
@@ -104,10 +108,9 @@ interface INewTrack {
     category: string;
 }
 
-
-const Step2 = ({ trackUpload }: { trackUpload: any }) => {
-    console.log(">>> check trackUpload 1: ", trackUpload);
-
+const Step2 = ({ trackUpload, setValue }: { trackUpload: any, setValue: any }) => {
+    const { data: session } = useSession();
+    const toast = useToast();
     const [info, setInfo] = React.useState<INewTrack>({
         title: "",
         description: "",
@@ -142,15 +145,35 @@ const Step2 = ({ trackUpload }: { trackUpload: any }) => {
         }
     ];
 
-    const handleSubmitForm = () => {
+    const handleSubmitForm = async () => {
         console.log(">>> check info: ", info);
+        const res = await sendRequest<IBackendRes<ITrackTop[]>>({
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks`,
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${session?.access_token}`,
+            },
+            body: {
+                title: info.title,
+                description: info.description,
+                imgUrl: info.imgUrl,
+                category: info.category,
+                trackUrl: info.trackUrl
+            }
+        });
+        if (res.data) {
+            toast.success("Tải track thành công!");
+            setValue(0);
+        } else {
+            toast.error(res.message);
+        }
     }
 
     return (
         <div>
             <div>
                 <div>
-                    Your uploading track: {trackUpload.fileName}
+                    {trackUpload.fileName}
                 </div>
                 <LinearProgressWithLabel value={trackUpload.percent} />
             </div>
