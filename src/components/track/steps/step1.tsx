@@ -42,7 +42,12 @@ function InputFileUpload() {
         </Button>
     );
 }
-const Step1 = ({ setValue, setTrackUpload }: { setValue: (v: number) => void, setTrackUpload: any }) => {
+const Step1 = ({ setValue, setTrackUpload, trackUpload }: {
+    setValue: (v: number) => void,
+    setTrackUpload: any,
+    trackUpload: any
+
+}) => {
     const { data: session } = useSession();
     const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
         // Do something with the files
@@ -61,15 +66,17 @@ const Step1 = ({ setValue, setTrackUpload }: { setValue: (v: number) => void, se
                     onUploadProgress: progressEvent => {
                         let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total!);
                         console.log(">>> check percentCompleted: ", percentCompleted);
-                        setTrackUpload({
+                        setTrackUpload((prev: any) => ({
+                            ...prev,
                             fileName: audio.name,
                             percent: percentCompleted
-                        })
-                        // do whatever you like with the percentage complete
-                        // maybe dispatch an action that will update a progress bar or something
+                        }))
                     }
                 })
-
+                setTrackUpload((prev: any) => ({
+                    ...prev,
+                    fileNameSaveDB: res.data.data.fileName
+                }))
             } catch (error) {
                 //@ts-ignore
                 console.log(">>> check error: ", error?.response?.data?.message)
