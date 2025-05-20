@@ -3,15 +3,24 @@ import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/utils/customHook';
 import { Container } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
+import { useRef } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
 const AppFooter = () => {
-    const hasMounted = useHasMounted();
-    if (!hasMounted) return (<></>)
+    const playerRef = useRef(null);
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
-
+    const hasMounted = useHasMounted();
     console.log(">>> check track: ", currentTrack)
+    if (currentTrack.isPlaying === true) {
+        //@ts-ignore
+        playerRef?.current?.audio?.current?.play();
+    } else {
+        //@ts-ignore
+        playerRef?.current?.audio?.current?.pause();
+    }
+
+    if (!hasMounted) return (<></>);
     return (
         <div style={{ marginTop: "50px" }}>
             <AppBar
@@ -29,11 +38,18 @@ const AppFooter = () => {
             }}>
                     <AudioPlayer
                         // autoPlay
+                        ref={playerRef}
                         layout='horizontal-reverse'
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/hoidanit.mp3`}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/tracks/${currentTrack.trackUrl}`}
                         style={{
                             boxShadow: "unset",
                             background: "#f2f2f2"
+                        }}
+                        onPlay={() => {
+                            setCurrentTrack({ ...currentTrack, isPlaying: true })
+                        }}
+                        onPause={() => {
+                            setCurrentTrack({ ...currentTrack, isPlaying: false })
                         }}
                     />
                     <div
@@ -45,8 +61,8 @@ const AppFooter = () => {
                             minWidth: 200
                         }}
                     >
-                        <div style={{ color: "#ccc" }}>Nguyen Thanh Dat</div>
-                        <div style={{ color: "black" }}>Gọi mưa</div>
+                        <div style={{ color: "#ccc" }}>{currentTrack.uploader.name}</div>
+                        <div style={{ color: "black" }}>{currentTrack.title}</div>
                     </div>
                 </Container>
             </AppBar>

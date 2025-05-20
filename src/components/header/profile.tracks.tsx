@@ -4,6 +4,7 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { useTrackContext } from "@/lib/track.wrapper";
+import { Pause, PauseCircle } from "@mui/icons-material";
 
 const ProfileTracks = ({ item }: { item: ITrackTop }) => {
     const theme = useTheme();
@@ -24,13 +25,29 @@ const ProfileTracks = ({ item }: { item: ITrackTop }) => {
                     <IconButton aria-label="previous">
                         {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
                     </IconButton>
-                    <IconButton aria-label="play/pause"
-                        onClick={() => {
-                            setCurrentTrack({ ...item, isPlaying: false });
-                        }}
-                    >
-                        <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-                    </IconButton>
+                    {
+                        (item._id !== currentTrack._id ||
+                            item._id === currentTrack._id && currentTrack.isPlaying === false)
+                        &&
+                        <IconButton aria-label="play/pause"
+                            onClick={() => {
+                                setCurrentTrack({ ...item, isPlaying: true });
+                            }}
+                        >
+                            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                        </IconButton>
+                    }
+                    {
+                        item._id === currentTrack._id && currentTrack.isPlaying === true
+                        &&
+                        <IconButton aria-label="play/pause"
+                            onClick={() => {
+                                setCurrentTrack({ ...item, isPlaying: false });
+                            }}
+                        >
+                            <PauseCircle sx={{ height: 38, width: 38 }} />
+                        </IconButton>
+                    }
                     <IconButton aria-label="next">
                         {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
                     </IconButton>
@@ -42,7 +59,7 @@ const ProfileTracks = ({ item }: { item: ITrackTop }) => {
                 image={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${item.imgUrl}`}
                 alt="Live from space album cover"
             />
-        </Card>
+        </Card >
     )
 }
 
