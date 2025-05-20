@@ -3,7 +3,7 @@ import { useTrackContext } from '@/lib/track.wrapper';
 import { useHasMounted } from '@/utils/customHook';
 import { Container } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
@@ -12,13 +12,16 @@ const AppFooter = () => {
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
     const hasMounted = useHasMounted();
     console.log(">>> check track: ", currentTrack)
-    if (currentTrack.isPlaying === true) {
-        //@ts-ignore
-        playerRef?.current?.audio?.current?.play();
-    } else {
-        //@ts-ignore
-        playerRef?.current?.audio?.current?.pause();
-    }
+
+    useEffect(() => {
+        if (currentTrack.isPlaying === true) {
+            //@ts-ignore
+            playerRef?.current?.audio?.current?.play();
+        } else {
+            //@ts-ignore
+            playerRef?.current?.audio?.current?.pause();
+        }
+    }, [currentTrack])
 
     if (!hasMounted) return (<></>);
     return (
@@ -58,7 +61,7 @@ const AppFooter = () => {
                             flexDirection: "column",
                             alignItems: "start",
                             justifyContent: "center",
-                            minWidth: 200
+                            minWidth: 300
                         }}
                     >
                         <div style={{ color: "#ccc" }}>{currentTrack.uploader.name}</div>
