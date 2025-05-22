@@ -7,10 +7,10 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
 import { Tooltip } from "@mui/material";
-import { sendRequest } from "@/utils/api";
 import { useTrackContext } from "@/lib/track.wrapper";
+import { fetchDefaultImages } from "@/utils/api";
 
-const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
+const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: IComment[] | null }) => {
     const searchParams = useSearchParams()
     const fileName = searchParams.get('audio');
     const containerRef = useRef<HTMLDivElement>(null);
@@ -18,7 +18,6 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
     const [time, setTime] = useState<string>("0:00");
     const [duration, setDuration] = useState<string>("0:00");
-
 
     const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         let gradient, progressGradient;
@@ -73,7 +72,7 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
                 setTime(formatTime(currentTime));
             }),
             wavesurfer.once('interaction', () => {
-                wavesurfer.play();
+                wavesurfer.play()
             })
         ]
 
@@ -95,30 +94,6 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
         return `${minutes}:${paddedSeconds}`
     }
 
-    const arrComments = [
-        {
-            id: 1,
-            avatar: "http://localhost:8000/images/chill1.png",
-            moment: 10,
-            user: "username 1",
-            content: "just a comment1"
-        },
-        {
-            id: 2,
-            avatar: "http://localhost:8000/images/chill1.png",
-            moment: 30,
-            user: "username 2",
-            content: "just a comment3"
-        },
-        {
-            id: 3,
-            avatar: "http://localhost:8000/images/chill1.png",
-            moment: 50,
-            user: "username 3",
-            content: "just a comment3"
-        },
-    ]
-
     const calLeft = (moment: number) => {
         const hardCodeDuration = 199;
         const percent = (moment / hardCodeDuration) * 100;
@@ -126,14 +101,14 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
     }
 
     useEffect(() => {
-        if (currentTrack.isPlaying && wavesurfer) {
-            wavesurfer.pause()
+        if (wavesurfer && currentTrack.isPlaying) {
+            wavesurfer.pause();
         }
     }, [currentTrack])
+
     useEffect(() => {
-        if (track?._id && !currentTrack._id) {
-            setCurrentTrack({ ...track, isPlaying: false });
-        }
+        if (track?._id && !currentTrack?._id)
+            setCurrentTrack({ ...track, isPlaying: false })
     }, [track])
 
     return (
@@ -162,7 +137,7 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
                                 onClick={() => {
                                     onPlayClick();
                                     if (track && wavesurfer) {
-                                        setCurrentTrack({ ...track, isPlaying: false });
+                                        setCurrentTrack({ ...currentTrack, isPlaying: false });
                                     }
                                 }}
                                 style={{
@@ -228,15 +203,15 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
                             style={{ position: "relative" }}
                         >
                             {
-                                arrComments.map((comment) => {
+                                comments?.map((comment: IComment) => {
                                     return (
-                                        <Tooltip title={comment.content} arrow key={comment.id}>
+                                        <Tooltip title={comment.content} arrow key={comment._id}>
                                             <img
                                                 onPointerMove={(e) => {
                                                     const hover = hoverRef.current!;
                                                     hover.style.width = calLeft(comment.moment)
                                                 }}
-                                                key={comment.id}
+                                                key={comment._id}
                                                 style={{
                                                     height: 20,
                                                     width: 20,
@@ -245,7 +220,7 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
                                                     zIndex: 20,
                                                     left: calLeft(comment.moment)
                                                 }}
-                                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/chill1.png`}
+                                                src={fetchDefaultImages(track?.uploader?.type!)}
                                             />
                                         </Tooltip>
 
@@ -263,12 +238,24 @@ const WaveTrack = ({ track }: { track: ITrackTop | null }) => {
                         alignItems: "center"
                     }}
                 >
-                    <div style={{
-                        background: "#ccc",
-                        width: 250,
-                        height: 250
-                    }}>
-                    </div>
+                    {
+                        track?.imgUrl ?
+                            <img
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${track?.imgUrl}`}
+                                style={{
+                                    height: "250px",
+                                    width: "250px"
+                                }}
+                                alt="" />
+                            :
+                            <div style={{
+                                background: "#ccc",
+                                width: 250,
+                                height: 250
+                            }} />
+                    }
+
+
                 </div>
 
             </div>

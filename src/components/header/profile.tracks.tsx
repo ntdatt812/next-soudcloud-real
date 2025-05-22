@@ -48,7 +48,7 @@ const ProfileTracks = ({ item }: { item: ITrackTop }) => {
                         </IconButton>
                     }
                     {
-                        item._id === currentTrack._id && currentTrack.isPlaying === true
+                        (item._id === currentTrack._id && currentTrack.isPlaying === true)
                         &&
                         <IconButton aria-label="play/pause"
                             onClick={() => {

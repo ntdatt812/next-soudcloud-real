@@ -58,4 +58,22 @@ declare global {
         currentTrack: IShareTrack;
         setCurrentTrack: (v: IShareTrack) => void;
     }
+
+    interface IUser {
+        _id: string,
+        email: string,
+        name: string,
+        role: string,
+        type: string,
+    }
+
+    interface IComment {
+        _id: string,
+        content: string,
+        moment: number,
+        user: IUser,
+        track: string,
+        createdAt: string,
+        updatedAt: string,
+    }
 }
