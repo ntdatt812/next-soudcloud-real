@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useWavesurfer } from "@/utils/customHook";
 import { WaveSurferOptions } from 'wavesurfer.js';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -8,7 +8,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import './wave.scss';
 import { Tooltip } from "@mui/material";
 import { useTrackContext } from "@/lib/track.wrapper";
-import { fetchDefaultImages } from "@/utils/api";
+import { fetchDefaultImages, sendRequest } from "@/utils/api";
 import CommentTrack from "./comment.track";
 import LikeTrack from "./like.track";
 
@@ -20,7 +20,8 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ICo
     const { currentTrack, setCurrentTrack } = useTrackContext() as ITrackContext;
     const [time, setTime] = useState<string>("0:00");
     const [duration, setDuration] = useState<string>("0:00");
-
+    const router = useRouter();
+    const viewRef = useRef(true);
     const optionsMemo = useMemo((): Omit<WaveSurferOptions, 'container'> => {
         let gradient, progressGradient;
         if (typeof window !== "undefined") {
@@ -111,7 +112,23 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ICo
     useEffect(() => {
         if (track?._id && !currentTrack?._id)
             setCurrentTrack({ ...track, isPlaying: false })
-    }, [track])
+    }, [track]);
+
+    const handleIncreaseView = async () => {
+        if (viewRef.current) {
+            await sendRequest<IBackendRes<IModelPaginate<ITrackLike>>>({
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/increase-view`,
+                method: "POST",
+                body: {
+                    trackId: track?._id
+                }
+            })
+            router.refresh();
+            viewRef.current = false;
+        }
+
+
+    }
 
     return (
         <div style={{ marginTop: 20 }}>
@@ -138,6 +155,7 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ICo
                             <div
                                 onClick={() => {
                                     onPlayClick();
+                                    handleIncreaseView()
                                     if (track && wavesurfer) {
                                         setCurrentTrack({ ...currentTrack, isPlaying: false });
                                     }

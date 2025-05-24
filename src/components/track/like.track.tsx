@@ -28,7 +28,6 @@ const LikeTrack = ({ track }: {
                 Authorization: `Bearer ${session.data?.access_token}`
             }
         })
-        console.log(">> check track like: ", trackLike)
         if (trackLike?.data?.result) {
             setTrackLike(trackLike.data.result);
         }
