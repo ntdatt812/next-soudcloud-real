@@ -9,6 +9,7 @@ import './wave.scss';
 import { Tooltip } from "@mui/material";
 import { useTrackContext } from "@/lib/track.wrapper";
 import { fetchDefaultImages } from "@/utils/api";
+import CommentTrack from "./comment.track";
 
 const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: IComment[] | null }) => {
     const searchParams = useSearchParams()
@@ -254,10 +255,14 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ICo
                                 height: 250
                             }} />
                     }
-
-
                 </div>
-
+            </div>
+            <div>
+                <CommentTrack
+                    comments={comments}
+                    track={track}
+                    wavesurfer={wavesurfer}
+                />
             </div>
         </div>
     )

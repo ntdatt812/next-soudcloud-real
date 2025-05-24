@@ -4,10 +4,12 @@ import Container from '@mui/material/Container';
 
 
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
+
     const res = await sendRequest<IBackendRes<ITrackTop>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
         method: "GET"
     })
+
     const comments = await sendRequest<IBackendRes<IModelPaginate<IComment>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/comments`,
         method: "POST",
@@ -15,9 +17,10 @@ const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {
             current: 1,
             pageSize: 100,
             trackId: params.slug,
-            sort: "-createAt"
+            sort: "-createdAt"
         }
     })
+    console.log(">> check commment: ", comments.data?.result)
     return (
         <Container>
             <div>
