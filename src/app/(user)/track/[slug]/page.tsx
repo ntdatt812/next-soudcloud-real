@@ -16,13 +16,20 @@ export async function generateMetadata(
 
     // fetch post information
     const res = await sendRequest<IBackendRes<ITrackTop>>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${params.slug}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tracks/${slug}`,
         method: "GET",
     })
 
     return {
         title: res?.data?.title,
         description: res?.data?.description,
+        openGraph: {
+            title: 'Nguyễn Thành Đạt',
+            description: 'Beyond Your Coding Skills',
+            type: 'website',
+            images: [`https://raw.githubusercontent.com/hoidanit/images-hosting/master/eric.png`],
+        },
+
     }
 }
 
