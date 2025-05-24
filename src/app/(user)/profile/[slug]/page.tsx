@@ -1,6 +1,7 @@
 import ProfileTracks from "@/components/header/profile.tracks";
 import { sendRequest } from "@/utils/api";
-import { Container, Grid } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
 
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {
     const res = await sendRequest<IBackendRes<IModelPaginate<ITrackTop>>>({

@@ -1,12 +1,11 @@
 'use client'
-import { Chip } from "@mui/material"
+import Chip from "@mui/material/Chip"
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { sendRequest } from "@/utils/api";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { fetchData } from "next-auth/client/_utils";
 
 
 const LikeTrack = ({ track }: {

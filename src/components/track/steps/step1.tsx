@@ -4,8 +4,7 @@ import { FileWithPath, useDropzone } from 'react-dropzone';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useCallback, useState } from 'react';
-import { sendRequestFile } from '@/utils/api';
+import { useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 

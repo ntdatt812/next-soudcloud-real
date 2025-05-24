@@ -1,5 +1,4 @@
 
-
 export async function GET(request: Request, response: Response) {
     const url = new URL(request.url);
     const searchParams = new URLSearchParams(url.search);

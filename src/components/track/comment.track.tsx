@@ -2,7 +2,8 @@
 import { fetchDefaultImages, sendRequest } from "@/utils/api"
 import { useHasMounted } from "@/utils/customHook";
 import { useToast } from "@/utils/toast";
-import { Box, TextField } from "@mui/material"
+import TextField from "@mui/material/TextField"
+import Box from "@mui/material/Box";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSession } from "next-auth/react";

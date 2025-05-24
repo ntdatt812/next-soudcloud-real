@@ -1,7 +1,7 @@
 import WaveTrack from '@/components/track/wave.track';
 import { sendRequest } from '@/utils/api';
 import Container from '@mui/material/Container';
-import { cache } from 'react';
+
 
 
 const DetailTrackPage = async ({ params }: { params: { slug: string } }) => {

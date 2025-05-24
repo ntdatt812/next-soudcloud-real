@@ -4,8 +4,10 @@ import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgres
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
-import { Button, MenuItem, TextField } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
@@ -24,25 +26,6 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
                     sx={{ color: 'text.secondary' }}
                 >{`${Math.round(props.value)}%`}</Typography>
             </Box>
-        </Box>
-    );
-}
-
-function LinearWithValueLabel() {
-    const [progress, setProgress] = React.useState(10);
-
-    React.useEffect(() => {
-        const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-        }, 800);
-        return () => {
-            clearInterval(timer);
-        };
-    }, []);
-
-    return (
-        <Box sx={{ width: '100%' }}>
-            <LinearProgressWithLabel value={progress} />
         </Box>
     );
 }

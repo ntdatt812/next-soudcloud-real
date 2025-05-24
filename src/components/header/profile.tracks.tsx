@@ -1,10 +1,16 @@
 'use client'
-import { Box, Card, CardContent, CardMedia, IconButton, Typography, useTheme } from "@mui/material"
+import Box from "@mui/material/Box"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import CardMedia from "@mui/material/CardMedia"
+import IconButton from "@mui/material/IconButton"
+import Typography from "@mui/material/Typography"
+import { useTheme } from "@mui/material"
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { useTrackContext } from "@/lib/track.wrapper";
-import { PauseCircle } from "@mui/icons-material";
+import PauseCircle from "@mui/icons-material/PauseCircle";
 import Link from "next/link";
 
 const ProfileTracks = ({ item }: { item: ITrackTop }) => {
