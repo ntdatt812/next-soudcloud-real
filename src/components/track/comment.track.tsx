@@ -1,5 +1,6 @@
 'use client'
 import { fetchDefaultImages, sendRequest } from "@/utils/api"
+import { useHasMounted } from "@/utils/customHook";
 import { useToast } from "@/utils/toast";
 import { Box, TextField } from "@mui/material"
 import dayjs from 'dayjs';
@@ -19,6 +20,8 @@ const CommentTrack = ({ comments, track, wavesurfer }: {
     const [yourComment, setYourComment] = useState<string>("");
     const { data: session } = useSession();
     const toast = useToast();
+    const hasMouted = useHasMounted();
+
     const formatTime = (seconds: number) => {
         const minutes = Math.floor(seconds / 60)
         const secondsRemainder = Math.round(seconds) % 60
@@ -108,7 +111,7 @@ const CommentTrack = ({ comments, track, wavesurfer }: {
                                     </div>
                                 </Box>
                                 <div style={{ fontSize: "12px", color: "#999" }}>
-                                    {dayjs(comment.createdAt).fromNow()}
+                                    {hasMouted && dayjs(comment.createdAt).fromNow()}
                                 </div>
                             </Box>
                         )

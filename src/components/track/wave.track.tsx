@@ -10,6 +10,7 @@ import { Tooltip } from "@mui/material";
 import { useTrackContext } from "@/lib/track.wrapper";
 import { fetchDefaultImages } from "@/utils/api";
 import CommentTrack from "./comment.track";
+import LikeTrack from "./like.track";
 
 const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: IComment[] | null }) => {
     const searchParams = useSearchParams()
@@ -256,6 +257,11 @@ const WaveTrack = ({ track, comments }: { track: ITrackTop | null, comments: ICo
                             }} />
                     }
                 </div>
+            </div>
+            <div>
+                <LikeTrack
+                    track={track}
+                />
             </div>
             <div>
                 <CommentTrack
